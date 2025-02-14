@@ -36,15 +36,24 @@ async def save_file(media):
     if is_file_already_saved(file_id, file_name):
         return False, 0
 
-    collection_to_use = col if not MULTIPLE_DATABASE else select_collection_based_on_size(file)
-
     try:
-        collection_to_use.insert_one(file)
+        col.insert_one(file)
         print(f"{file_name} is successfully saved.")
         return True, 1
     except DuplicateKeyError:
         print(f"{file_name} is already saved.")
         return False, 0
+    except:
+        if MULTIPLE_DATABASE:
+            try:
+                sec_col.insert_one(file)
+                print(f"{file_name} is successfully saved.")
+                return True, 1
+            except DuplicateKeyError:
+                print(f"{file_name} is already saved.")
+                return False, 0
+        else:
+            print("Your Current File Database Is Full, Turn On Multiple Database Feature And Add Second File Mongodb To Save File.")
 
 def clean_file_name(file_name):
     """Clean and format the file name."""
@@ -67,14 +76,6 @@ def is_file_already_saved(file_id, file_name):
             return True
             
     return False
-
-def select_collection_based_on_size(file):
-    """Select the appropriate collection based on database size."""
-    result = db.command('dbstats')
-    
-    if result['dataSize'] > 503316480:
-        return sec_col
-    return col
 
 async def get_search_results(chat_id, query, file_type=None, max_results=10, offset=0, filter=False):
     """For given query return (results, next_offset)"""
