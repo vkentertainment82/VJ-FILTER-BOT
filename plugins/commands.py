@@ -1342,7 +1342,7 @@ async def remove_premium_cmd_handler(client, message):
             await message.reply_text("Premium access removed to the user.")
             await client.send_message(
                 chat_id=user_id,
-                text="<b>premium removed by admins \n\n Contact Admin if this is mistake \n\n 👮 Admin : {} \n</b>".format(OWNER_LNK),                
+                text="<b>premium removed by Admin \n\n Contact Admin if this is mistake \n\n 👮 Admin : {} \n</b>".format("https://t.me/dg_contents1"),                
             )
         else:
             await message.reply_text("Invalid time format.'")
@@ -1381,7 +1381,7 @@ async def check_plans_cmd(client, message):
         ]
         reply_markup = InlineKeyboardMarkup(btn)
         m=await message.reply_sticker("CAACAgIAAxkBAAIBTGVjQbHuhOiboQsDm35brLGyLQ28AAJ-GgACglXYSXgCrotQHjibHgQ")         
-        await message.reply_text(f"**😢 You Don't Have Any Premium Subscription.\n\n Check Out Our Premium /plan**",reply_markup=reply_markup)
+        await message.reply_text(f"**😢 Currently You Don't Have Any Premium Subscription.\n\n Check Out Our Premium Plans By Sending /plan** ☺️🎉",reply_markup=reply_markup)
         await asyncio.sleep(2)
         await m.delete()
 
